@@ -93,10 +93,18 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
             //4.View models:in this we place all the data required for in a view, as even a strongly typed
             //view may not have all data needed inside the view.
+
+            Employee employee = _employeeRepository.GetEmployee(id.Value);
+            if(employee==null)
+            {
+                Response.StatusCode = 404;
+
+                return View("EmployeeNotFound", id.Value);
+            }
             HomeDetailsViewModel model = new HomeDetailsViewModel()
             {
                 PageTitle = "View Model Title Example",
-                Employee = _employeeRepository.GetEmployee(id.Value)
+                Employee = employee
             };
             return View(model);
         }

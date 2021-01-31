@@ -51,6 +51,44 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                /*
+                if environment is other than development and try to navigate to wrong url
+                you'll get to an error page, this page is rarely used as it doesn give
+                much info
+                    
+                app.UseStatusCodePages();
+                */
+
+                /*
+               here you can specify URL you wanna go to if there is non success status code.
+                eg. we wanna go to error controller's method that has same name as the non
+                success http status code.
+                {0}=> place holder to get proper error status code
+                eg. if status code is 404 we got to CAM 404.
+                so you can use this logic to write logic of any error status code 
+                between 400-500.
+                /Error/{0} is the url u get redirected to, which is handled by mvc middleware and we
+                are able to see our error page in errorcontroller.
+                */
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+
+
+                /*
+                 You can also use:app.UseStatusCodePagesWithReExecute("");
+                Difference between app.UseStatusCodePagesWithReExecute(""); and  app.UseStatusCodePagesWithRedirects("/");
+                
+                -app.UseStatusCodePagesWithRedirects("/"): returns status code 200 after it
+                has redirected the user to the error page. So people don't always prefer it
+                
+                -app.UseStatusCodePagesWithReExecute(""): This middleware after returning the error page
+                replaces success status code with original error status code as the midlleware is
+                executed again,So error status code is written unlike UseStatusCodePagesWithRedirects
+                that returns 200 ok later.
+                This does not redirects, hence the url does not change.
+                 */
+            }
             //An ApplicationBuilderFactory is used to create an ApplicationBuilder instance. 
             //ApplicationBuilder type implements the IApplicationBuilder interface
             //But IApplicationBuilder doesn have Run() method in it, so it is implemented

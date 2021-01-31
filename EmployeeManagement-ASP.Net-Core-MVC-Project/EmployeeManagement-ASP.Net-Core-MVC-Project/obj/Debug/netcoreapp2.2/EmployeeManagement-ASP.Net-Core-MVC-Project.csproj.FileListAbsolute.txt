@@ -32,3 +32,5 @@ G:\Programming\DotNet\ASP-DOTNET-CORE-2.2\Project-1\EmployeeManagement-ASP.Net-C
 G:\Programming\DotNet\ASP-DOTNET-CORE-2.2\Project-1\EmployeeManagement-ASP.Net-Core-MVC-Project\EmployeeManagement-ASP.Net-Core-MVC-Project\bin\Debug\netcoreapp2.2\libman.json
 G:\Programming\DotNet\ASP-DOTNET-CORE-2.2\Project-1\EmployeeManagement-ASP.Net-Core-MVC-Project\EmployeeManagement-ASP.Net-Core-MVC-Project\obj\Debug\netcoreapp2.2\Razor\Views\Home\Create.cshtml.g.cs
 G:\Programming\DotNet\ASP-DOTNET-CORE-2.2\Project-1\EmployeeManagement-ASP.Net-Core-MVC-Project\EmployeeManagement-ASP.Net-Core-MVC-Project\obj\Debug\netcoreapp2.2\Razor\Views\Home\Edit.cshtml.g.cs
+G:\Programming\DotNet\ASP-DOTNET-CORE-2.2\Project-1\EmployeeManagement-ASP.Net-Core-MVC-Project\EmployeeManagement-ASP.Net-Core-MVC-Project\obj\Debug\netcoreapp2.2\Razor\Views\Home\EmployeeNotFOund.cshtml.g.cs
+G:\Programming\DotNet\ASP-DOTNET-CORE-2.2\Project-1\EmployeeManagement-ASP.Net-Core-MVC-Project\EmployeeManagement-ASP.Net-Core-MVC-Project\obj\Debug\netcoreapp2.2\Razor\Views\Shared\NotFound.cshtml.g.cs
