@@ -1,0 +1,13 @@
+﻿@*
+        -You can use this to specify all imports at one place instead of specifying imports in
+    each and very view.
+        -This is also heirarchical in nature, i.e _ViewImports.cshtml in sub folders can override
+        the ones in Views folder.
+        -_ViewImports.cshtml is always present in Views folder only.
+
+
+*@
+
+@using EmployeeManagement_ASP.Net_Core_MVC_Project.ViewModels;
+@using EmployeeManagement_ASP.Net_Core_MVC_Project.Models;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

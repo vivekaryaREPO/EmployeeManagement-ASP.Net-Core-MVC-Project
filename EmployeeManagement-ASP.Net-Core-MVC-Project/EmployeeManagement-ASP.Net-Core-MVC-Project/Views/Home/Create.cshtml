@@ -1,0 +1,126 @@
+﻿@model EmployeeCreateViewModel
+@inject IEmployeeRepository _empRepository  
+
+@*@inject is used to inject a dependency into a view*@
+
+
+@{
+    ViewBag.Title = "Create Employee";
+}
+
+    <form enctype="multipart/form-data" asp-controller="home" asp-action="create" method="post" class="mt-3">
+        <div class="form-group row">
+            <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Name" class="form-control" placeholder="Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Email" class="form-control" placeholder="Email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Department" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <select asp-for="Department" class="custom-select mr-sm-2"
+                        asp-items="Html.GetEnumSelectList<Dept>()">
+                    <option value="">Please select</option>
+                </select>
+                <span asp-validation-for="Department" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        @*  asp-for tag helper is set to "Photo" property. "Photo" property type is IFormFile
+        so at runtime asp.net core generates file upload control (input type=file)
+        *@
+
+        <div class="form-group row">
+            <label asp-for="Photos" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <div class="custom-file">
+                    <input asp-for="Photos" multiple class="form-control custom-file-input">
+                    <label class="custom-file-label">Choose File...</label>
+                </div>
+            </div>
+        </div>
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+
+        @*This script is required to display the selected file in the file upload element*@
+
+        @section Scripts {
+            <script>
+                $(document).ready(function () {
+                    $('.custom-file-input').on("change", function () {
+                        var fileName = $(this).val().split("\\").pop();
+                        $(this).next('.custom-file-label').html(fileName);
+                    });
+                });
+            </script>
+
+            @*This script is required to display the selected file in the file upload element
+            If a sinle file is selected, the name of the file is displayed. If multiple
+            files are selected, then the count of files is displayed.*@
+            <script>
+                $(document).ready(function () {
+                    $('.custom-file-input').on("change", function () {
+                        var fileLabel = $(this).next('.custom-file-label');
+                        var files = $(this)[0].files;
+                        if (files.length > 1) {
+                            fileLabel.html(files.length + ' files selected');
+                        }
+                        else if (files.length == 1) {
+                            fileLabel.html(files[0].name);
+                        }
+                    });
+                });
+            </script>
+        }
+
+
+
+
+
+
+
+
+        @*<div class="form-group row">
+            <div class="col-sm-10">
+                Total number of employees: @_empRepository.GetAllEmployees().Count();
+
+                => count increases by 1 when AddSingleton() is used as the single instance is created from
+                the first http request and used throughout the application for all the http request
+
+                =>with AddScoped(): count remains 3 initially(as statically initialized) and when you click create,
+                it becomes 4. No matter how many times you click create then, it remains 4 only. Because
+                everytime you click create, It's a new httprequest so a new instance of _empRepository
+                is created which has count 3 and as soon as you click create it becomes 1 and remains on create view
+                and that's why you don't see any update on the count of the employees.
+                reason 1: you remain on the same view i.e create view.
+                reason 2: your create click is a new httprequest that creates a new instance of
+                the _empRepository that initially has count 3(but you see 4 as you are on the same view)
+                and when you click create again, the count value of this instance of _empRepository is updated
+                by 1 and internally becomes 4. and 4(current view) is updated with 4. So no change is noticed.
+
+                =>with AddTransient():count remains 3 all the time, so everytime you click create,
+                it's a new http request, and hence it remains 3 forever. note that _empRepository is
+                requested everytime the create view is rendered.
+
+            </div>
+        </div>*@
+
+    </form>
+            
+

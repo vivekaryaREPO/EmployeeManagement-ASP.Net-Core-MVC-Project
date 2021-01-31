@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>EmployeeManagement_ASP.Net_Core_MVC_Project</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20210129232420_AddPhotopathColumn.cs" />
+    <Compile Remove="Migrations\20210129232420_AddPhotopathColumn.Designer.cs" />
+    <Compile Remove="Migrations\20210129232843_AddSomeProperty.cs" />
+    <Compile Remove="Migrations\20210129232843_AddSomeProperty.Designer.cs" />
+    <Compile Remove="Migrations\20210129234130_Chnaged_AddSomePropertyAfterUpdate.cs" />
+    <Compile Remove="Migrations\20210129234130_Chnaged_AddSomePropertyAfterUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20210129234312_AddSomePropertyAgain.cs" />
+    <Compile Remove="Migrations\20210129234312_AddSomePropertyAgain.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

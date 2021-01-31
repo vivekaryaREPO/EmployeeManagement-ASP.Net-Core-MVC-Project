@@ -1,0 +1,92 @@
+﻿@model IEnumerable<EmployeeManagement_ASP.Net_Core_MVC_Project.Models.Employee>
+@*<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <h1>LIST OF EMPLOYEES</h1>*@
+
+@*Below is razor code block*@
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Employees List";
+}
+@*<table border="1">
+        @foreach (EmployeeManagement_ASP.Net_Core_MVC_Project.Models.Employee emp in Model)
+        {
+            <tr>
+                <td>
+                    ID:
+                </td>
+                <td>
+                    @emp.Id
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    NAME:
+                </td>
+                <td>
+                    @emp.Name
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    EMAIL:
+                </td>
+                <td>
+                    @emp.Email
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    DEPARTMENT:
+                </td>
+                <td>
+                    @emp.Department
+                </td>
+            </tr>
+        }
+    </table>*@
+@foreach (EmployeeManagement_ASP.Net_Core_MVC_Project.Models.Employee emp in Model)
+{
+    var photoPath = "~/Images/" + (emp.PhotoPath ?? "andrew-neel-TTPMpLl_2lc-unsplash.jpg");
+    <div class="card m-3"  style="min-width: 18rem; max-width:30.5%;">
+        <div class="card-header">
+            <h3>@emp.Name</h3>
+        </div>
+
+        @*using asp-append-version="true" on the image tag will ensure that images are chached
+        and are reloaded only when their content is changed.*@
+        <img class="card-img-top" imageThumbnail src="@photoPath" asp-append-version="true" />
+        <div class="card-footer text-center">
+
+            @*href="/home/details/@emp.Id"*@
+            @*<a href="/home/details/@emp.Id" class="btn btn-primary">View</a>
+            <a href="#" class="btn btn-primary">Edit</a>
+            <a href="#" class="btn btn-danger">Delete</a>*@
+
+            @*using html helper like in asp.net mvc,
+            It generates the entire anchor tag with href value:*@
+            @*@Html.ActionLink("View", "Details", "Home", new { id = emp.Id })*@
+
+            @*if you want only href value to be generated and not the anchor tag itself you can use
+            @Url.Action("details","home",new { id=emp.Id}) , this helps you style your anchor element as you line
+            as you are generating anchor tag*@
+
+
+
+            @*using anchor tag helper of asp.net core:*@
+            <a asp-controller="home" asp-action="details" asp-route-id="@emp.Id"
+               class="btn btn-primary">View</a>
+            <a asp-controller="home" asp-action="edit" asp-route-id="@emp.Id"
+               class="btn btn-primary">Edit</a>
+            <a asp-controller="home" asp-action="details" asp-route-id="@emp.Id"
+               class="btn btn-primary">Delete</a>
+
+        </div>
+    </div>
+}
+
+@*</body>
+    </html>*@

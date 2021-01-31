@@ -1,0 +1,242 @@
+﻿@*********ViewData example***********@
+@*<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>@ViewData["Page Title"]</title>
+    </head>
+    <body>
+        <h1>@ViewData["Page Title"]</h1>
+        @{
+            var employee = ViewData["employee"] as EmployeeManagement_ASP.Net_Core_MVC_Project.Models.Employee;
+        }
+        <table border="1">
+            <tr>
+                <td>
+                    ID
+                </td>
+                <td>
+                    @employee.Id
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>
+                    @employee.Name
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Department
+                </td>
+                <td>
+                    @employee.Department
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Email Address
+                </td>
+                <td>
+                    @employee.Email
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>*@
+
+@*********ViewBag example***********@
+@*<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>@ViewBag.PageTitle</title>
+    </head>
+    <body>
+        <h1>
+            @ViewBag.PageTitle
+        </h1>
+        <table>
+            <tr>
+                <td>
+                    Id:
+                </td>
+                <td>
+                    @ViewBag.Employee.Id
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Name:
+                </td>
+                <td>
+                    @ViewBag.Employee.Name
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Email:
+                </td>
+                <td>
+                    @ViewBag.Employee.Email
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Department:
+                </td>
+                <td>
+                    @ViewBag.Employee.Department
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>*@
+
+@*Difference between ViewBag and ViewData:
+    1.Both create loosely typed view. Both lack intellisense and compile time checking.
+    2.ViewBag uses keys to store data, whereas ViewBag uses dynamic properties(properties that we create dynamically on the viewbag).*@
+
+@*********Strongly typed view example***********@
+@*@model EmployeeManagement_ASP.Net_Core_MVC_Project.Models.Employee
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <h1>
+            Strongly typed view
+        </h1>
+        <table>
+            <tr>
+                <td>
+                    Id:
+                </td>
+                <td>
+                    @Model.Id
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Name:
+                </td>
+                <td>
+                    @Model.Name
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Email:
+                </td>
+                <td>
+                    @Model.Email
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Department:
+                </td>
+                <td>
+                    @Model.Department
+                </td>
+            </tr>
+        </table>
+
+    </body>
+    </html>*@
+
+@*********View Model view example***********@
+
+@*@model EmployeeManagement_ASP.Net_Core_MVC_Project.ViewModels.HomeDetailsViewModel
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <h1>
+            @Model.PageTitle
+        </h1>*@
+@model HomeDetailsViewModel
+@*Below is razor code block*@
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Employee Details";
+    var photoPath = "~/Images/" + (Model.Employee.PhotoPath?? "andrew-neel-TTPMpLl_2lc-unsplash.jpg");
+}
+@*<table>
+    <tr>
+        <td>
+            Id:
+        </td>
+        <td>
+            @Model.Employee.Id
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Name:
+        </td>
+        <td>
+            @Model.Employee.Name
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Email:
+        </td>
+        <td>
+            @Model.Employee.Email
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Department:
+        </td>
+        <td>
+            @Model.Employee.Department
+        </td>
+    </tr>
+</table>*@
+
+@*****with bootstrap*****@
+    <div class="row justify-content-center m-3">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1>@Model.Employee.Name</h1>
+                </div>
+
+                <div class="card-body text-center">
+                    <img class="card-img-top" imageThumbnail src="@photoPath" asp-append-version="true"/>
+
+                    <h4>Employee ID : @Model.Employee.Id</h4>
+                    <h4>Email : @Model.Employee.Email</h4>
+                    <h4>Department : @Model.Employee.Department</h4>
+
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-controller="home" asp-action="index" class="btn btn-primary" >Back</a>
+                    <a asp-controller="home" asp-action="edit" asp-route-id="@Model.Employee.Id"
+               class="btn btn-primary" >Edit</a>
+                    <a asp-controller="home" asp-action="details" asp-route-id="@Model.Employee.Id"
+               class="btn btn-primary" >Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts{
+    <script src="~/js/CustomScripts.js"></script>
+}
+
+
+
+@*</body>
+    </html>*@
