@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,19 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
             return View();
         }
+
+        [Route("Error")]
+        [AllowAnonymous]
+        public IActionResult Error()
+        {
+            //log exceptions, don't display
+            var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            ViewBag.ExceptionPath = exceptionDetails.Path;
+            ViewBag.ExceptionMessage = exceptionDetails.Error.Message;
+            ViewBag.StackTrace = exceptionDetails.Error.StackTrace;
+            return View("Error");
+        }
+
 
     }
 }

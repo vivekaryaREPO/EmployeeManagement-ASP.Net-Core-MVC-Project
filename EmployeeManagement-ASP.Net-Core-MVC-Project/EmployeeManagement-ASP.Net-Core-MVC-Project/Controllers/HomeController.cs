@@ -62,6 +62,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
         //when controller class level Route is set, we can write: [Route("/details/{id?}")]
         public ViewResult Details(int? id)
         {
+            throw new Exception("errors in detail view");
 
             // return Json(_employeeRepository.GetEmployee(1));
             //return new ObjectResult(_employeeRepository.GetEmployee(1)) when returning 

@@ -52,7 +52,16 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project
                 app.UseDeveloperExceptionPage();
             }
             else
-            {
+            { 
+                //NOTE:THIS IS EXECUTED, IF AND ONLY IF THE ENVIRONMENT IS NOT DEVELOPMENT.
+                /*
+                 If environment is development, then app.UseDeveloperExceptionPage(); is being used to show
+                exceptions. For other environment we use UseExceptionHandler().
+                we want error controller to handle unhandled exception(i.e exceptions with no try catch)
+                 */
+                app.UseExceptionHandler("/Error");
+
+
                 /*
                 if environment is other than development and try to navigate to wrong url
                 you'll get to an error page, this page is rarely used as it doesn give
@@ -72,9 +81,9 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project
                 /Error/{0} is the url u get redirected to, which is handled by mvc middleware and we
                 are able to see our error page in errorcontroller.
                 */
+                //app.UseStatusCodePagesWithRedirects("/Error/{0}");
+
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
-
-
                 /*
                  You can also use:app.UseStatusCodePagesWithReExecute("");
                 Difference between app.UseStatusCodePagesWithReExecute(""); and  app.UseStatusCodePagesWithRedirects("/");
