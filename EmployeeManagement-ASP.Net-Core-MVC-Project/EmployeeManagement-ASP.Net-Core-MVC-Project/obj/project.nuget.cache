@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "uXbZFUG3rmyMNdTM9+OmW3NC5UtEJbVbzRERxGByUEb0MSwKtya/nSFoCl48ifcVJsUFcbdmpsQ+MR6p+tPQJg==",
+  "dgSpecHash": "ixgOHnRp/8l8fqJEyNQWii3B32N9MjEZOIB2W/SoqSRP1thvL4TPSumTG6BV15YZFo/QSbX2PONK7Wm0Fl5ysg==",
   "success": true,
   "projectFilePath": "G:\\Programming\\DotNet\\ASP-DOTNET-CORE-2.2\\Project-1\\EmployeeManagement-ASP.Net-Core-MVC-Project\\EmployeeManagement-ASP.Net-Core-MVC-Project\\EmployeeManagement-ASP.Net-Core-MVC-Project.csproj",
   "expectedPackageFiles": [
@@ -178,6 +178,9 @@
     "C:\\Users\\Vivek Arya\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\newtonsoft.json.bson\\1.0.1\\newtonsoft.json.bson.1.0.1.nupkg.sha512",
+    "C:\\Users\\Vivek Arya\\.nuget\\packages\\nlog\\4.6.3\\nlog.4.6.3.nupkg.sha512",
+    "C:\\Users\\Vivek Arya\\.nuget\\packages\\nlog.extensions.logging\\1.5.0\\nlog.extensions.logging.1.5.0.nupkg.sha512",
+    "C:\\Users\\Vivek Arya\\.nuget\\packages\\nlog.web.aspnetcore\\4.8.2\\nlog.web.aspnetcore.4.8.2.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\remotion.linq\\2.2.0\\remotion.linq.2.2.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,13 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Models
     public class SQLEmployeeRepository : IEmployeeRepository
     {
         private readonly AppDbContext context;
+        private readonly ILogger<SQLEmployeeRepository> logger;
 
-        public SQLEmployeeRepository(AppDbContext context)
+        public SQLEmployeeRepository(AppDbContext context,
+            ILogger<SQLEmployeeRepository> _logger)
         {
             this.context = context;
+            this.logger = _logger;
         }
         Employee IEmployeeRepository.Add(Employee employee)
         {
@@ -27,6 +31,10 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Models
             {
                 context.Employees.Remove(employee);
                 context.SaveChanges();
+            }
+            else
+            {
+                logger.LogInformation("Employee not found:");
             }
             return employee;
         }

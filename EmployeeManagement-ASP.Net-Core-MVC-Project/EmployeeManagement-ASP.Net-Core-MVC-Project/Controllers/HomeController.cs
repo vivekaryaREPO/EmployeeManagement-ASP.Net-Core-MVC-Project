@@ -3,6 +3,7 @@ using EmployeeManagement_ASP.Net_Core_MVC_Project.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,13 +24,16 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
     //of your application with Route["~/Home"], so this becomes default CAM of HomeController as this is executed if request is for /Home
     public class HomeController:Controller
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IEmployeeRepository employeeRepository;
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ILogger<HomeController> logger;
 
-        public HomeController(IEmployeeRepository employeeRepository, IHostingEnvironment _hostingEnvironment)
+        public HomeController(IEmployeeRepository _employeeRepository, 
+            IHostingEnvironment _hostingEnvironment,ILogger<HomeController> logger)
         {
-            _employeeRepository = employeeRepository;
+            employeeRepository = _employeeRepository;
             hostingEnvironment = _hostingEnvironment;
+            this.logger = logger;
         }
 
 
@@ -47,7 +51,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
         public ViewResult Index()
         {
-            IEnumerable<Employee> employees= _employeeRepository.GetAllEmployees();
+            IEnumerable<Employee> employees= employeeRepository.GetAllEmployees();
             return View(employees);
         }
 
@@ -62,7 +66,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
         //when controller class level Route is set, we can write: [Route("/details/{id?}")]
         public ViewResult Details(int? id)
         {
-            throw new Exception("errors in detail view");
+            
 
             // return Json(_employeeRepository.GetEmployee(1));
             //return new ObjectResult(_employeeRepository.GetEmployee(1)) when returning 
@@ -95,7 +99,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
             //4.View models:in this we place all the data required for in a view, as even a strongly typed
             //view may not have all data needed inside the view.
 
-            Employee employee = _employeeRepository.GetEmployee(id.Value);
+            Employee employee = employeeRepository.GetEmployee(id.Value);
             if(employee==null)
             {
                 Response.StatusCode = 404;
@@ -148,7 +152,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
                     Department = employee.Department,
                     PhotoPath = uniqueFileName
                 };
-                Employee emp = _employeeRepository.Add(e);
+                Employee emp = employeeRepository.Add(e);
                 return RedirectToAction("Details", new { id = emp.Id });
             }
            return View();//we are able to return this as both RedirectToAction and ViewResult implement IActionResult
@@ -157,7 +161,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
         public ViewResult Edit(int id)
         {
-            Employee employee = _employeeRepository.GetEmployee(id);
+            Employee employee = employeeRepository.GetEmployee(id);
             EmployeeEditViewModel employeeEditViewModel = new EmployeeEditViewModel()
             {
                 Id = employee.Id,
@@ -176,7 +180,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                Employee employee = _employeeRepository.GetEmployee(model.Id);
+                Employee employee = employeeRepository.GetEmployee(model.Id);
                 employee.Name = model.Name;
                 employee.Email = model.Email;
                 employee.Department = model.Department;
@@ -191,7 +195,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
                     employee.PhotoPath = ProcessUploadedFile(model, uniqueFileName);
                 }
   
-                Employee emp = _employeeRepository.Add(employee);
+                Employee emp = employeeRepository.Add(employee);
                 return RedirectToAction("Details");
             }
             return View();//we are able to return this as both RedirectToAction and ViewResult implement IActionResult
