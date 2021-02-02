@@ -6,6 +6,7 @@ using EmployeeManagement_ASP.Net_Core_MVC_Project.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,45 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project
             // services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
 
             services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();//one instance for each request
+
+
+            //lect 65.
+            /*
+             IdentityUser class inherits from IdentityUser<string> and IdentityUser<string>
+            has many propertirs, like username,email,password etc so .net used this class
+            to create user table in db. Proeprties here is limited so you can iherit this 
+            class and add more columns i.e properties.
+
+            IdentityRole:to manage roles of the user.
+
+            AddEntityFrameworkStores<AppDbContext>(): configure to get user and role from
+            underlying db.
+             
+             */
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 10;
+                options.Password.RequiredUniqueChars = 3;
+            }).AddEntityFrameworkStores<AppDbContext>();
+
+
+            /*
+             you can override this in the AddIdentity<..>() also, as
+
+             services.AddIdentity<IdentityUser, IdentityRole>(options=>
+            {
+                 options.Password.RequiredLength = 10;
+                options.Password.RequiredUniqueChars = 3;
+            }).AddEntityFrameworkStores<AppDbContext>();
+
+
+             */
+            //services.Configure<IdentityOptions>(options=>
+            //{
+            //    options.Password.RequiredLength = 10;
+            //    options.Password.RequiredUniqueChars = 3;
+            //});
+
 
         }
 
@@ -141,23 +181,24 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project
 
 
             app.UseStaticFiles();//if request is for static file, this is executed and this middleware short circuits the pipeline.
-
+            app.UseAuthentication();
 
             //This adds MVC support for our application, i.e what a default route should
             //be. Instead of this you can use app.UsemMvc().This method doesn configure
             //any default route. So you can use another overload of UseMvc that takes instance
             //of Action<IRouteBuilder> and you can use MapRoute() on this instance to configure
             //your routes. Every route you configure must have a name and template. eg.
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            //});
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
             //default is name of the route, template implies url pattern,? in id means id is optional, controller=home means our default controller is Home
-            
+
             //3rd way to configure routing is through Attribute routing.
             //You can use Route decorator on controller class and controller action method to do that.-see controller action mthod.
-            
-            app.UseMvcWithDefaultRoute();//if rquest is for static file, this isn't executed. So no unnecessary processing is done.
+
+
+            //app.UseMvcWithDefaultRoute();//if rquest is for static file, this isn't executed. So no unnecessary processing is done.
 
 
             //having this commented will not display "Hello world" in the output when a

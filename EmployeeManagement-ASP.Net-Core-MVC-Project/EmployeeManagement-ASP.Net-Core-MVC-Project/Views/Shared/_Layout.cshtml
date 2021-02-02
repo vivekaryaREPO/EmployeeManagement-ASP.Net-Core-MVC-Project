@@ -1,6 +1,6 @@
 ﻿@*
-        Layout view is not specific to a controller this is why we have placed it into shared
-    folder.
+        *Layout view is not specific to a controller this is why we have placed it into shared
+        folder.
        1. There can be multiple layout views in our app.
        2. Page specific view are substituted at @RenderBody() area.
        3. You can't hard code @ViewBag.Title in shared view, as diff views have diff title.
@@ -11,9 +11,15 @@
     FALSE=>No need to include that element/reference on the other views.
     TRUE=>Always include that element/reference on the other views.
 
-
+    *To check if the user is logged in or not, we are gonna make use of SignInManager 
+    class.
+    So our application navigation menu is in layout view, so this is where we need to inject
+    signinmanager class.
 
 *@
+
+@inject SignInManager<IdentityUser> signInManager;
+
 
 <!DOCTYPE html>
 
@@ -39,7 +45,7 @@
         <link rel="stylesheet"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
               crossorigin="anonymous"
-              href="https://sstackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position"
               asp-fallback-test-value="absolute"
@@ -66,6 +72,15 @@
                         <a class="nav-link" asp-controller="home" asp-action="create">Create</a>
                     </li>
                 </ul>
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="account" asp-action="register">
+                            Register
+                        </a>
+                    </li>
+                </ul>
+
             </div>
         </nav>
 

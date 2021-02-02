@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Models
         We create a class that derives from the DbContext class.
         DbContext class is in Microsoft.EntityFrameworkCore namespace.
     */
-    public class AppDbContext : DbContext
+    public class AppDbContext :IdentityDbContext ///IdentityDbContext inherits from DbContext
     {
         /*
          For the DbContext class to be able to do any useful work, it needs an instance of the DbContextOptions class.
@@ -29,8 +30,9 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Models
         public DbSet<Employee> Employees { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Seed();
-            //base.OnModelCreating(modelBuilder);
+            
         }
     }
 }

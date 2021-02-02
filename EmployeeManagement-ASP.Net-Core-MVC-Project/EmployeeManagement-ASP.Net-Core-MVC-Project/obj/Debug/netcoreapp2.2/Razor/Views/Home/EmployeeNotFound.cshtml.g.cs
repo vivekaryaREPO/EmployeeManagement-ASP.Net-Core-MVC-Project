@@ -23,8 +23,13 @@ using EmployeeManagement_ASP.Net_Core_MVC_Project.Models;
 
 #line default
 #line hidden
+#line 13 "G:\Programming\DotNet\ASP-DOTNET-CORE-2.2\Project-1\EmployeeManagement-ASP.Net-Core-MVC-Project\EmployeeManagement-ASP.Net-Core-MVC-Project\Views\_ViewImports.cshtml"
+using Microsoft.AspNetCore.Identity;
+
+#line default
+#line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"19cea6d00057cf42c9f71ae07f64b876b158bb25", @"/Views/Home/EmployeeNotFound.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"7201295602beff19c26467232bd78c71d5a7f7d9", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"11ce8aa50d16a9ec476416a6f8ff9d8d77aa5e6d", @"/Views/_ViewImports.cshtml")]
     public class Views_Home_EmployeeNotFound : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<int>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("asp-controller", "home", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -73,7 +78,7 @@ using EmployeeManagement_ASP.Net_Core_MVC_Project.Models;
             WriteLiteral(" cannot be found\r\n    </h5>\r\n</div>\r\n\r\n");
             EndContext();
             BeginContext(227, 146, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "19cea6d00057cf42c9f71ae07f64b876b158bb255756", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "19cea6d00057cf42c9f71ae07f64b876b158bb256003", async() => {
                 BeginContext(326, 43, true);
                 WriteLiteral("Click here to see the list of all employees");
                 EndContext();
