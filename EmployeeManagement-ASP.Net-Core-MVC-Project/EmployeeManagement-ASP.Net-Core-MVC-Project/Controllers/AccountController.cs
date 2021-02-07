@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement_ASP.Net_Core_MVC_Project.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,12 +22,48 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+
+
+
+        /*
+         * so basically we wanna check if the email exists or not, befor registering
+           the user.
+         Instead of using both Get and Post, you can use:
+         [AcceptVerbs("Get","Post")]
+
+         */ 
+        [HttpGet]
         [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse(string Username)
+        {
+            var user=await userManager.FindByEmailAsync(Username);
+            if (user == null)
+            {
+                return Json(true);//no validation error
+            }
+            else
+            {
+                return Json($"the email {Username} is already in use");
+            }
+        }
+
+
+
+
+
+
+
+
+
+        [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if(ModelState.IsValid)
@@ -67,6 +104,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -74,7 +112,8 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model,string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +122,23 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+                    if(string.IsNullOrEmpty(returnUrl))
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+                    else
+                    {
+                        /*
+                         * we did not want our application to have the open redirect
+                           vulnerability, and this is why we used LocalRedirect(returnUrl)
+                           and not Redirect(returnUrl).
+                         * Or you can also use Url.IsLocalUrl(returnUrl) to check if the Url
+                           is local or not, else if url isn't local, exception will be
+                           thrown.
+                         */
+                        return LocalRedirect(returnUrl);
+                    }
+                    
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
