@@ -41,16 +41,16 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
         [HttpGet]
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> IsEmailInUse(string Username)
+        public async Task<IActionResult> IsEmailInUse(string email)
         {
-            var user=await userManager.FindByEmailAsync(Username);
+            var user=await userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return Json(true);//no validation error
             }
             else
             {
-                return Json($"the email {Username} is already in use");
+                return Json($"the email {email} is already in use");
             }
         }
 
@@ -146,6 +146,8 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
             return View(model);
         }
+        
+
 
 
 
