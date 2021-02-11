@@ -31,6 +31,14 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            /*
+             Lec 89.
+             */
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
             modelBuilder.Seed();
             
         }

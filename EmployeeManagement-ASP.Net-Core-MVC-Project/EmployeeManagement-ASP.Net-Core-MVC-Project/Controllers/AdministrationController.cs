@@ -3,6 +3,8 @@ using EmployeeManagement_ASP.Net_Core_MVC_Project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +22,15 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly ILogger<AdministrationController> logger;
 
         public AdministrationController(RoleManager<IdentityRole> roleManager, 
-                                        UserManager<IdentityUser> userManager)
+                                        UserManager<IdentityUser> userManager,
+                                        ILogger<AdministrationController> logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.logger = logger;
         }
 
 
@@ -302,10 +307,81 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
 
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
 
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                var result = await userManager.DeleteAsync(user);
 
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers");
+                }
 
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
 
+                return View("ListUsers");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                // Wrap the code in a try/catch block
+                try
+                {
+                    //throw new Exception("Test Exception");
+
+                    var result = await roleManager.DeleteAsync(role);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRoles");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View("ListRoles");
+                }
+                // If the exception is DbUpdateException, we know we are not able to
+                // delete the role as there are users in the role being deleted
+                catch (DbUpdateException ex)
+                {
+                    //Log the exception to a file. We discussed logging to a file
+                    // using Nlog in Part 63 of ASP.NET Core tutorial
+                    logger.LogError($"Exception Occured : {ex}");
+                    // Pass the ErrorTitle and ErrorMessage that you want to show to
+                    // the user using ViewBag. The Error view retrieves this data
+                    // from the ViewBag and displays to the user.
+                    ViewBag.ErrorTitle = $"{role.Name} role is in use";
+                    ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users in this role. If you want to delete this role, please remove the users from the role and then try to delete";
+                    return View("Error");
+                }
+            }
+        }
 
 
 
@@ -321,4 +397,4 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
 
     }
-}
+    }
