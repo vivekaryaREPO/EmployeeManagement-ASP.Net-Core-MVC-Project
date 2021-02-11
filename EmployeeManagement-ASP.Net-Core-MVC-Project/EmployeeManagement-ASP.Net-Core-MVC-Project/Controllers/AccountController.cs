@@ -80,6 +80,15 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
                      
                      
                      */
+                    /*
+                     If the user is signed in and in the Admin role, then it is
+                    the Admin user that is creating a new user. So redirect the
+                    Admin user to ListRoles action
+                     */
+                    if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers", "Administration");
+                    }
                     await signInManager.SignInAsync(user,isPersistent:false);
                     return RedirectToAction("index","home");
                 }
@@ -146,11 +155,15 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
             return View(model);
         }
-        
 
 
 
-
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
 
 
