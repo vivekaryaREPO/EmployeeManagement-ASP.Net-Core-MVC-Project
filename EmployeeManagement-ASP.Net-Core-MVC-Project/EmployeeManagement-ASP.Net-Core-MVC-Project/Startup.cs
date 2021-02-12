@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement_ASP.Net_Core_MVC_Project.Models;
+using EmployeeManagement_ASP.Net_Core_MVC_Project.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,23 +56,64 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project
             }).AddXmlSerializerFormatters();
 
 
+            /*
+             * lect 97
+             -Changing default access denied path to /Administration/AccessDenied
+             */
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
+            });
 
 
             /*
              -You can now use "DeleteRolePolicy" which is a name we've given to our policy
               to [Authorize] a controller action method or a Controller itself.
-             -Keep chaining RequireClaim() to add more roles
+             -Keep chaining RequireClaim() to add more roles, and a user must then satisfy
+              all the roles in order to call that particular CAM.
              */
             services.AddAuthorization(options=>
             {
                 options.AddPolicy("DeleteRolePolicy", 
                     policy => policy.RequireClaim("Delete Role"));
+
+                options.AddPolicy("EditRolePolicy",
+                    policy => policy.RequireClaim("Edit Role","true"));//claim value comparison is case sensitive,so true is not True
+
+                options.AddPolicy("AdminRolePolicy",
+                    policy => policy.RequireClaim("Admin"));
+
+                //services.AddAuthorization(options =>
+                //{
+                //    options.AddPolicy("AllowedCountryPolicy",
+                //        policy => policy.RequireClaim("Country", "USA", "India", "UK"));
+                //});
+
+                /*
+                 * CUSTOM AUTHORIZATION
+                 options.AddPolicy("EditRolePolicy", policy =>
+                 policy.RequireAssertion(context => AuthorizeAccess(context)));
+
+                *CUSTOM AUTHORIZATION:PREVENTING ADMIN TO CHANGE ROLES OF ITSELF
+                -ManageAdminRolesAndClaimsRequirement is a new class we've created
+                options.AddPolicy("EditRolePolicy", policy =>
+                policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+
+                 */
+
+
+
             });
 
 
             //services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
             services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();//one instance for each request
 
+            // Register the first handler
+            services.AddSingleton<IAuthorizationHandler,
+                CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+            // Register the second handler
+            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
 
 
@@ -255,6 +297,14 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project
 
             */
 
+        }
+
+
+        private bool AuthorizeAccess(AuthorizationHandlerContext context)
+        {
+            return context.User.IsInRole("Admin") &&
+                    context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true") ||
+                    context.User.IsInRole("Super Admin");
         }
     }
 }

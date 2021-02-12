@@ -86,6 +86,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
 
         [HttpGet]
+        [Authorize(Policy ="EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             // Find the role by Role ID
@@ -120,6 +121,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
         // This action responds to HttpPost and receives EditRoleViewModel
         [HttpPost]
+
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);
@@ -263,7 +265,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
                 Id = user.Id,
                 Email = user.Email,
                 UserName = user.UserName,
-                Claims = userClaims.Select(c => c.Value).ToList(),
+                Claims = userClaims.Select(c => c.Type+" : "+ c.Value).ToList(),
                 Roles = userRoles
             };
 
@@ -487,7 +489,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
                 // If the user has the claim, set IsSelected property to true, so the checkbox
                 // next to the claim is checked on the UI
-                if (existingUserClaims.Any(c => c.Type == claim.Type))
+                if (existingUserClaims.Any(c => c.Type == claim.Type && c.Value=="true"))
                 {
                     userClaim.IsSelected = true;
                 }
@@ -523,7 +525,7 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
             // Add all the claims that are selected on the UI
             result = await userManager.AddClaimsAsync(user,
-                model.Cliams.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+                model.Cliams.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.IsSelected?"true":"false")));
 
             if (!result.Succeeded)
             {
@@ -537,7 +539,12 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project.Controllers
 
 
 
-
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
 
 
