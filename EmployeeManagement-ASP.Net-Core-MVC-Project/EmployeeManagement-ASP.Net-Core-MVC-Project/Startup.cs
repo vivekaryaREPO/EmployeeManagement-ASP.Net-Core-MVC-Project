@@ -53,7 +53,22 @@ namespace EmployeeManagement_ASP.Net_Core_MVC_Project
                 options.Filters.Add(new AuthorizeFilter(policy));
 
             }).AddXmlSerializerFormatters();
-            
+
+
+
+
+            /*
+             -You can now use "DeleteRolePolicy" which is a name we've given to our policy
+              to [Authorize] a controller action method or a Controller itself.
+             -Keep chaining RequireClaim() to add more roles
+             */
+            services.AddAuthorization(options=>
+            {
+                options.AddPolicy("DeleteRolePolicy", 
+                    policy => policy.RequireClaim("Delete Role"));
+            });
+
+
             //services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
             services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();//one instance for each request
 
